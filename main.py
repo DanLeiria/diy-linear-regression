@@ -1,40 +1,93 @@
 from generate_data import create_dataset
-import matplotlib.pyplot as plt
-import seaborn as sns
+from grad_descent import gradient_descent
+from plotting_data import plot_optimization
+
 import numpy as np
+import logging  # Logs of the scripts
+import yaml  # Load project settings from a .yaml configuration file
+
+
+### ================================================================== ###
+###                         LOGGING CONFIG                             ###
+### ================================================================== ###
+"""
+Prepare configuration of the logs.
+"""
+
+logging.basicConfig(
+    level=logging.INFO,  # Could be DEBUG, WARNING, ERROR, CRITICAL
+    format="%(asctime)s: [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("app.log", mode="w"),  # Logs to a file
+        logging.StreamHandler(),  # Logs to console
+    ],
+)
+
+# Create a logger
+logger = logging.getLogger(__name__)
+
+logger.info("Starting main...")
 
 ### ================================================================== ###
 ###                          GENERATE DATA                             ###
 ### ================================================================== ###
+""" 
+Generate data based on the slope, bias, number of datapoints and outliers.
+"""
 
-NUM_DATAPOINTS = 100
-SLOPE = 1.0
-INTERCEPT = 0.0
-NUM_OUTLIERS = 10
+# Load config file
+with open("config.yaml", "r") as f:
+    config = yaml.safe_load(f)
+
+# Test
+if not config:
+    logger.error("Couldn't load config file.")
 
 X, y = create_dataset(
-    num_cases=NUM_DATAPOINTS,
-    slope=SLOPE,
-    intercept=INTERCEPT,
-    num_outliers=NUM_OUTLIERS,
+    num_cases=config["NUM_DATAPOINTS"],
+    slope=config["SLOPE"],
+    bias=config["BIAS"],
+    num_outliers=config["NUM_OUTLIERS"],
 )
 
 
 ### ================================================================== ###
 ###                 RUN DEVELOPED LINEAR REGRESSION                    ###
 ### ================================================================== ###
+"""
+Run the developed algorithm fit a linear regression using gradient descent.
+"""
 
+# Random initialization of the slope and the bias values
 slope_init = np.random.rand(1)
-intercept_init = np.random.rand(1)
+bias_init = np.random.rand(1)
 
-LEARNING_RATE = 0.001
-EPOCHS = 100
+# Variables for the algorithm gradient descent
+LEARNING_RATE = config["LEARNING_RATE"]
+EPOCHS = config["EPOCHS"]
+
+
+slope_final, bias_final, cost_list = gradient_descent(
+    X=X,
+    y=y,
+    slope_init=slope_init,
+    bias_init=bias_init,
+    learn_rate=LEARNING_RATE,
+    epochs=EPOCHS,
+)
+
+logger.info("Estimation concluded.")
 
 
 ### ================================================================== ###
-###                      RUN PACKAGE ESTIMATION                        ###
+###                         OPTIMIZATION PLOT                          ###
 ### ================================================================== ###
 
-fig, ax = plt.subplots(figsize=(8, 6))
-sns.regplot(x=X, y=y, line_kws={"color": "red", "linewidth": 1.5}, ax=ax)
-plt.show()
+plot_optimization(cost_list=cost_list, X=X, y=y)
+
+### ================================================================== ###
+###                         OPTIMIZATION PLOT                          ###
+### ================================================================== ###
+
+
+logger.info("Finished main.")

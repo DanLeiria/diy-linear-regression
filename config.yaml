@@ -1,0 +1,9 @@
+# Generate dataset
+NUM_DATAPOINTS: 100
+SLOPE: -3.9
+BIAS: 100.9
+NUM_OUTLIERS: 10
+
+# Gradient descent - settings
+LEARNING_RATE: 0.01
+EPOCHS: 10000

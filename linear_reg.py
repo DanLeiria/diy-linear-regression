@@ -10,7 +10,7 @@ class LinearRegr:
 
     # Loss function of the linear regression
     def loss_function(
-        self, num_cases: int, y: float, X: float, slope_hat: float, intercept_hat: float
+        self, num_cases: int, y, X, slope_hat: float, intercept_hat: float
     ):
         m = num_cases
         if m <= 0:
@@ -28,8 +28,8 @@ class LinearRegr:
     def gradient_descent(
         self,
         num_cases,
-        X: float,
-        y: float,
+        X,
+        y,
         slope_i: float,
         intercept_i: float,
         learn_rate: float,
@@ -45,7 +45,7 @@ class LinearRegr:
 
         return slope, intercept
 
-    def estimate_linear(X, y, slope_init, intercept_init, learn_rate, epochs):
+    def estimate_linear(self, X, y, slope_init, intercept_init, learn_rate, epochs):
         # Define number of cases
         if len(X) == len(y):
             m = len(y)
@@ -53,15 +53,20 @@ class LinearRegr:
             print("X and y must have the same size")
             return None
 
-        for ep_i in epochs:
+        for ep_i in range(epochs):
             # Calculate the slope and intercept
-            slope, intercept = LinearRegr.gradient_descent(
-                m, X, y, slope_init, intercept_init, learn_rate
+            slope, intercept = self.gradient_descent(
+                num_cases=m,
+                X=X,
+                y=y,
+                slope_i=slope_init,
+                intercept_i=intercept_init,
+                learn_rate=learn_rate,
             )
 
-            # Calculate the overall loss
-            loss = LinearRegr.loss_function(
-                num_cases=m, X=X, y=y, slope_hat=slope, intercept_hat=intercept
-            )
+            # # Calculate the overall loss
+            # loss = LinearRegr.loss_function(
+            #     num_cases=m, X=X, y=y, slope_hat=slope, intercept_hat=intercept
+            # )
 
-            return slope, intercept, loss
+            return slope, intercept

@@ -2,12 +2,12 @@ import numpy as np
 import random
 
 
-def create_dataset(num_cases: int, slope: float, intercept: float, num_outliers: int):
+def create_dataset(num_cases: int, slope: float, bias: float, num_outliers: int):
     # Generate X-values (random)
     X = np.random.rand(num_cases)
 
     # Estimate y-values
-    y = slope * X + intercept
+    y = slope * X + bias
 
     # Add outliers
     if num_outliers > 0:
@@ -24,5 +24,5 @@ def create_dataset(num_cases: int, slope: float, intercept: float, num_outliers:
 
 
 if __name__ == "__main__":
-    X, y = create_dataset(num_cases=100, slope=1.0, intercept=0.0, num_outliers=10)
+    X, y = create_dataset(num_cases=100, slope=1.0, bias=0.0, num_outliers=10)
     print(y)
