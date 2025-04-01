@@ -1,0 +1,12 @@
+# TODO List
+
+[] Add mini-batch or stochastic gradient descent variants
+[] Implement convergence criteria (early stopping)
+[] Export results to file
+[] Add unit tests
+[] Better logs
+[] Better initial random start for slope and bias
+[] Add more plots:
+    [] Cost vs Epochs curve
+    [] Fitted line over noisy data points
+    [] Final estimated slope and bias printed via logs
