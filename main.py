@@ -85,9 +85,5 @@ logger.info("Estimation concluded.")
 
 plot_optimization(cost_list=cost_list, X=X, y=y)
 
-### ================================================================== ###
-###                         OPTIMIZATION PLOT                          ###
-### ================================================================== ###
-
 
 logger.info("Finished main.")
